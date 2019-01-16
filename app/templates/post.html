@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% from "bootstrap/pagination.html" import render_pagination %}
+
+{% block title %}发布微博{% endblock %}
+
+{% block page_content %}
+    {% include "_posts.html" %}
+    <h3 id="comments">评论</h3>
+    {% if current_user.can(Permission.COMMENT) %}
+        <div class="comment-form">
+            {{ wtf.quick_form(form, button_map={'submit': 'primary'}) }}
+        </div>
+    {% endif %}
+    {% include '_comments.html' %}
+    {% if pagination %}
+        <div class="pagination">
+            {{ render_pagination(pagination, '.post', fragment='#comments', id=posts[0].id) }}
+        </div>
+    {% endif %}
+{% endblock %}
